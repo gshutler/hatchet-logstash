@@ -4,15 +4,6 @@ require 'thread'
 
 Bundler.require
 
-# e = LogStash::Event.new
-# e.message = "ERR MER GERD SURKETS"
-# e.source = Socket.gethostname
-
-# puts e.to_json
-
-# socket = TCPSocket.new('localhost', 10665)
-# socket.write(e.to_hash.to_json)
-
 module Hatchet
 
   class LogStashFormatter
@@ -74,7 +65,7 @@ module Hatchet
 
     class SocketClient
 
-      HALT = :hammer_time
+      STOP = :hammer_time
 
       def initialize(host, port)
         @host = host
@@ -89,7 +80,7 @@ module Hatchet
       end
 
       def stop!
-        send HALT
+        send STOP
       end
 
       def join
@@ -103,7 +94,7 @@ module Hatchet
       end
 
       def send_messages
-        until (message = @queue.pop) == HALT
+        until (message = @queue.pop) == STOP
           send_message message
         end
       end
